@@ -12,6 +12,10 @@ Some thought on improvements:
 - Better data structures for the filters
 - Tests
 
+### Language used
+
+Vue, typescript, CSS, HTML
+
 ## Project setup
 
 ```
