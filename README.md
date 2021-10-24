@@ -11,6 +11,7 @@ Some thought on improvements:
 - Handling of more surveys & survey details
 - Better data structures for the filters
 - Tests
+- Changed from CSS to SCSS
 
 ### Language used
 
