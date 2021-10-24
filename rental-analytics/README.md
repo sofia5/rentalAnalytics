@@ -7,8 +7,10 @@ If you want, it's possible to mark the surveys as favorites, and filter them out
 
 Some thought on improvements:
 
-- Cookies / storing the selectedFavorites would be good so that these are kept when reloading the page
+- Cookies (and caching?) / storing the selected Favorites would be good so that these are kept when reloading the page
 - Handling of more surveys & survey details
+- Better data structures for the filters
+- Tests
 
 ## Project setup
 

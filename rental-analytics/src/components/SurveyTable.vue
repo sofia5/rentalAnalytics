@@ -29,18 +29,18 @@ let filterList = { favorites: [] };
 
 export default {
   name: "SurveyTable",
-  props: ["activeList"],
+  props: ["activeFavorites", "activeSurveyType"],
   watch: {
-    activeList: function (activeList) {
-      if (activeList.favorites) {
-        this.items = filterList.favorites;
-      } else {
-        this.items = surveys.data.listSurveys;
-      }
+    activeFavorites: function () {
+      this.setFilteredData();
+    },
+    activeSurveyType: function () {
+      this.setFilteredData();
     },
   },
   data() {
     return {
+      surveyTypeSelected: "",
       fields: [
         {
           key: "survey_type",
@@ -84,7 +84,7 @@ export default {
         },
         {
           key: "favorite_id",
-          label: "Favorite",
+          label: "Favorit",
         },
       ],
       items: surveys.data.listSurveys,
@@ -93,26 +93,58 @@ export default {
 
   methods: {
     setActive(fav_id, item) {
-      const index = surveys.data.listSurveys
-        .map((i) => i === item)
-        .indexOf(true);
+      const index = this.items.map((i) => i === item).indexOf(true);
 
       if (fav_id.length === 0) {
-        surveys.data.listSurveys[index].favorite_id = Math.floor(
-          Math.random() * 100
-        );
+        this.items[index].favorite_id = Math.floor(Math.random() * 100);
         filterList.favorites.push(item);
       } else {
-        surveys.data.listSurveys[index].favorite_id = null;
+        this.items[index].favorite_id = null;
         filterList.favorites.pop(item);
       }
       this.$emit("filter", filterList);
+    },
+    setFilteredData() {
+      let emptyFavorites = false;
+      let emptySurveyTypes = false;
+
+      if (this.activeFavorites) {
+        if (this.activeFavorites.all) {
+          emptyFavorites = true;
+        }
+      } else {
+        emptyFavorites = true;
+      }
+
+      for (var key in this.activeSurveyType) {
+        if (this.activeSurveyType[key]) {
+          this.surveyTypeSelected = key;
+        }
+      }
+
+      if (this.surveyTypeSelected === "Alla" || !this.surveyTypeSelected) {
+        emptySurveyTypes = true;
+      }
+
+      if (emptyFavorites && emptySurveyTypes) {
+        this.items = surveys.data.listSurveys;
+      } else if (emptyFavorites) {
+        this.items = surveys.data.listSurveys.filter(
+          (i) => i.survey_type === this.surveyTypeSelected
+        );
+      } else if (emptySurveyTypes) {
+        this.items = filterList.favorites;
+      } else {
+        this.items = filterList.favorites;
+        this.items = this.items.filter(
+          (i) => i.survey_type === this.surveyTypeSelected
+        );
+      }
     },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .survey-table {
   color: #ced4da;

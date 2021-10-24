@@ -1,46 +1,84 @@
 <template>
-  <div
-    class="filterWrapper mb-4"
-    v-if="filtered.length > 0 || filtered.favorites.length > 0"
-  >
-    <h5 class="mb-2 filterText">View</h5>
+  <div class="filterWrapper mb-4">
+    <h5 class="mb-2 filterText">Undersökningstyp</h5>
+    <div class="btnWrapper mb-3">
+      <button
+        class="btn responsive surveytype-button"
+        v-for="(surveyType, index) in activeSurveyTypes"
+        :key="index"
+        v-bind:class="{ active: surveyType }"
+        @click="setActiveSurveyType(index)"
+      >
+        {{ index }}
+      </button>
+    </div>
+    <h5 class="mb-2 filterText">Favoriter</h5>
     <div class="btnWrapper">
       <button
         class="btn responsive btn-secondary show-button"
-        v-bind:class="{ active: activeButton.all }"
+        v-bind:class="{ active: activeFavorites.all }"
         @click="setActive('all')"
       >
-        All
+        Alla
       </button>
       <button
         class="btn responsive btn-secondary"
-        v-bind:class="{ active: activeButton.favorites }"
+        v-bind:class="{ active: activeFavorites.favorites }"
         @click="setActive('favorites')"
       >
-        Favorites
+        Favoriter
       </button>
     </div>
   </div>
 </template>
 
 <script>
+// import surveys from "../data/surveys.json";
+
 export default {
   name: "Filters",
   props: ["filtered"],
   data() {
     return {
-      activeButton: { all: true, favorites: false },
+      activeFavorites: { all: true, favorites: false },
+      activeSurveyTypes: {
+        Alla: true,
+        "CSC Bostad": false,
+        "CSC Lokal": false,
+        Felanmälan: false,
+        Inflytt: false,
+        Utflytt: false,
+      },
     };
   },
   methods: {
     setActive(btnName) {
-      const value = this.activeButton[btnName];
-      this.activeButton = { all: false, favorites: false };
+      const value = this.activeFavorites[btnName];
+      this.activeFavorites = { all: false, favorites: false };
       if (!value) {
-        this.activeButton[btnName] = true;
+        this.activeFavorites[btnName] = true;
       }
-      this.$emit("active", this.activeButton);
+      this.$emit("active", this.activeFavorites);
     },
+    setActiveSurveyType(surveyType) {
+      const value = this.activeSurveyTypes[surveyType];
+      for (var key in this.activeSurveyTypes) {
+        this.activeSurveyTypes[key] = false;
+      }
+      if (!value) {
+        this.activeSurveyTypes[surveyType] = true;
+      }
+      this.$emit(
+        "surveyTypes",
+        JSON.parse(JSON.stringify(this.activeSurveyTypes))
+      );
+    },
+  },
+  created() {
+    // surveys.data.listSurveys.forEach((survey) => {
+    //   const name = survey.survey_type;
+    //   this.activeSurveyTypes[name] = false;
+    // });
   },
 };
 </script>
@@ -54,6 +92,7 @@ export default {
   flex-basis: 100%;
   color: #30bced;
 }
+.surveytype-button,
 .show-button {
   margin-right: 1rem;
 }

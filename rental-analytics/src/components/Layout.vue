@@ -1,7 +1,15 @@
 <template>
   <div class="container">
-    <Filters :filtered="filters" @active="setActive" />
-    <SurveyTable :activeList="active" @filter="setFilteredData" />
+    <Filters
+      :filtered="filters"
+      @active="setActive"
+      @surveyTypes="setActiveSurveyTypes"
+    />
+    <SurveyTable
+      :activeFavorites="active"
+      :activeSurveyType="surveyTypes"
+      @filter="setFilteredData"
+    />
   </div>
 </template>
 
@@ -15,6 +23,7 @@ export default {
     return {
       filters: null,
       active: null,
+      surveyTypes: null,
     };
   },
   components: {
@@ -28,10 +37,10 @@ export default {
     setActive(value) {
       this.active = value;
     },
+    setActiveSurveyTypes(value) {
+      this.surveyTypes = value;
+    },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
