@@ -1,15 +1,7 @@
 <template>
   <div class="container">
-    <Filters
-      :filtered="filters"
-      @active="setActive"
-      @surveyTypes="setActiveSurveyTypes"
-    />
-    <SurveyTable
-      :activeFavorites="active"
-      :activeSurveyType="surveyTypes"
-      @filter="setFilteredData"
-    />
+    <Filters @active="setActive" @surveyTypes="setActiveSurveyTypes" />
+    <SurveyTable :activeFavorites="active" :activeSurveyType="surveyTypes" />
   </div>
 </template>
 
@@ -21,7 +13,6 @@ export default {
   name: "Layout",
   data() {
     return {
-      filters: null,
       active: null,
       surveyTypes: null,
     };
@@ -31,9 +22,6 @@ export default {
     Filters,
   },
   methods: {
-    setFilteredData(value) {
-      this.filters = value;
-    },
     setActive(value) {
       this.active = value;
     },

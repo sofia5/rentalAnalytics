@@ -94,7 +94,6 @@ export default {
   methods: {
     setActive(fav_id, item) {
       const index = this.items.map((i) => i === item).indexOf(true);
-
       if (fav_id.length === 0) {
         this.items[index].favorite_id = Math.floor(Math.random() * 100);
         filterList.favorites.push(item);
@@ -102,7 +101,6 @@ export default {
         this.items[index].favorite_id = null;
         filterList.favorites.pop(item);
       }
-      this.$emit("filter", filterList);
     },
     setFilteredData() {
       let emptyFavorites = false;

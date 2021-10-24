@@ -37,7 +37,6 @@
 
 export default {
   name: "Filters",
-  props: ["filtered"],
   data() {
     return {
       activeFavorites: { all: true, favorites: false },
