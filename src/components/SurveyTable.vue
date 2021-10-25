@@ -29,12 +29,9 @@ let filterList = { favorites: [] };
 
 export default {
   name: "SurveyTable",
-  props: ["activeFavorites", "activeSurveyType"],
+  props: ["activeFilters"],
   watch: {
-    activeFavorites: function () {
-      this.setFilteredData();
-    },
-    activeSurveyType: function () {
+    activeFilters: function () {
       this.setFilteredData();
     },
   },
@@ -106,16 +103,16 @@ export default {
       let emptyFavorites = false;
       let emptySurveyTypes = false;
 
-      if (this.activeFavorites) {
-        if (this.activeFavorites.all) {
+      if (this.activeFilters.favorites) {
+        if (this.activeFilters.favorites.Alla) {
           emptyFavorites = true;
         }
       } else {
         emptyFavorites = true;
       }
 
-      for (var key in this.activeSurveyType) {
-        if (this.activeSurveyType[key]) {
+      for (var key in this.activeFilters.surveyTypes) {
+        if (this.activeFilters.surveyTypes[key]) {
           this.surveyTypeSelected = key;
         }
       }

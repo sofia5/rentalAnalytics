@@ -4,7 +4,7 @@
     <div class="btnWrapper mb-3">
       <button
         class="btn responsive surveytype-button"
-        v-for="(surveyType, index) in activeSurveyTypes"
+        v-for="(surveyType, index) in activeFilters.surveyTypes"
         :key="index"
         v-bind:class="{ active: surveyType }"
         @click="setActiveSurveyType(index)"
@@ -16,68 +16,58 @@
     <div class="btnWrapper">
       <button
         class="btn responsive btn-secondary show-button"
-        v-bind:class="{ active: activeFavorites.all }"
-        @click="setActive('all')"
+        v-for="(favorite, index) in activeFilters.favorites"
+        :key="index"
+        v-bind:class="{ active: favorite }"
+        @click="setActiveFavorites(index)"
       >
-        Alla
-      </button>
-      <button
-        class="btn responsive btn-secondary"
-        v-bind:class="{ active: activeFavorites.favorites }"
-        @click="setActive('favorites')"
-      >
-        Favoriter
+        {{ index }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-// import surveys from "../data/surveys.json";
+import surveys from "../data/surveys.json";
 
 export default {
   name: "Filters",
   data() {
     return {
-      activeFavorites: { all: true, favorites: false },
-      activeSurveyTypes: {
-        Alla: true,
-        "CSC Bostad": false,
-        "CSC Lokal": false,
-        Felanmälan: false,
-        Inflytt: false,
-        Utflytt: false,
-      },
+      activeFilters: { favorites: {}, surveyTypes: {} },
     };
   },
   methods: {
-    setActive(btnName) {
-      const value = this.activeFavorites[btnName];
-      this.activeFavorites = { all: false, favorites: false };
+    setActiveFavorites(name) {
+      const value = this.activeFilters.favorites[name];
+      this.activeFilters.favorites = { Alla: false, Favoriter: false };
       if (!value) {
-        this.activeFavorites[btnName] = true;
+        this.activeFilters.favorites[name] = true;
       }
-      this.$emit("active", this.activeFavorites);
+      this.sendData();
     },
     setActiveSurveyType(surveyType) {
-      const value = this.activeSurveyTypes[surveyType];
-      for (var key in this.activeSurveyTypes) {
-        this.activeSurveyTypes[key] = false;
+      const value = this.activeFilters.surveyTypes[surveyType];
+      for (var key in this.activeFilters.surveyTypes) {
+        this.activeFilters.surveyTypes[key] = false;
       }
       if (!value) {
-        this.activeSurveyTypes[surveyType] = true;
+        this.activeFilters.surveyTypes[surveyType] = true;
       }
-      this.$emit(
-        "surveyTypes",
-        JSON.parse(JSON.stringify(this.activeSurveyTypes))
-      );
+      this.sendData();
+    },
+    sendData() {
+      this.activeFilters = JSON.parse(JSON.stringify(this.activeFilters));
+      this.$emit("active", this.activeFilters);
     },
   },
   created() {
-    // surveys.data.listSurveys.forEach((survey) => {
-    //   const name = survey.survey_type;
-    //   this.activeSurveyTypes[name] = false;
-    // });
+    this.activeFilters.surveyTypes["Alla"] = true;
+    surveys.data.listSurveys.forEach((survey) => {
+      const name = survey.survey_type;
+      this.activeFilters.surveyTypes[name] = false;
+    });
+    this.activeFilters.favorites = { Alla: true, Favoriter: false };
   },
 };
 </script>

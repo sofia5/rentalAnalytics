@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Filters @active="setActive" @surveyTypes="setActiveSurveyTypes" />
-    <SurveyTable :activeFavorites="active" :activeSurveyType="surveyTypes" />
+    <Filters @active="setActive" />
+    <SurveyTable :activeFilters="active" />
   </div>
 </template>
 
@@ -24,9 +24,6 @@ export default {
   methods: {
     setActive(value) {
       this.active = value;
-    },
-    setActiveSurveyTypes(value) {
-      this.surveyTypes = value;
     },
   },
 };
