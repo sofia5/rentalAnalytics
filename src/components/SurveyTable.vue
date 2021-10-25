@@ -25,7 +25,7 @@
 
 <script>
 import surveys from "../data/surveys.json";
-let filterList = { favorites: [] };
+let favoriteList = [];
 
 export default {
   name: "SurveyTable",
@@ -93,10 +93,10 @@ export default {
       const index = this.items.map((i) => i === item).indexOf(true);
       if (fav_id.length === 0) {
         this.items[index].favorite_id = Math.floor(Math.random() * 100);
-        filterList.favorites.push(item);
+        favoriteList.push(item);
       } else {
         this.items[index].favorite_id = null;
-        filterList.favorites.pop(item);
+        favoriteList.pop(item);
       }
     },
     setFilteredData() {
@@ -128,9 +128,9 @@ export default {
           (i) => i.survey_type === this.surveyTypeSelected
         );
       } else if (emptySurveyTypes) {
-        this.items = filterList.favorites;
+        this.items = favoriteList;
       } else {
-        this.items = filterList.favorites;
+        this.items = favoriteList;
         this.items = this.items.filter(
           (i) => i.survey_type === this.surveyTypeSelected
         );

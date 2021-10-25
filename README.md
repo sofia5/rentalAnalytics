@@ -12,6 +12,7 @@ Some thought on improvements:
 - Better data structures for the filters
 - Tests
 - Changed from CSS to SCSS
+- Being able to select multiple values in the same category
 
 ### Language used
 
